@@ -1,0 +1,37 @@
+h1{
+	text-align: center;
+}
+h2{
+	text-align: center;
+}
+#info {
+	visibility:hidden;
+}
+
+#mainimg {
+    display: block;
+    height: 60%;
+    width:60%;
+    margin-left: auto;
+    margin-right: auto;
+}
+#word{
+	display:block;
+	    margin: auto;
+    width: 50%;
+    border: 2px solid green;
+}
+#word div{
+	 display: inline;
+	 font-size: 50px;
+}
+
+.letter{
+	font-size: 50px;
+	margin-left:2px;
+	margin-right:2px;
+}
+
+#somediv{
+	visibility:hidden;
+}
