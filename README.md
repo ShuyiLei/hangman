@@ -1,4 +1,4 @@
-This project is hosted by a embedded Tomcat 8.5 Server.
+This project is hosted by a embedded Tomcat 8.5 Server. You can download the tarball file at https://github.com/ShuyiLei/hangman/releases
 
 JDK7.0+ is required for this project, please install JDK on your computer.
 
