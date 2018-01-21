@@ -7,7 +7,7 @@ computer, please install one first.
 For example, on Ubuntu, run:
 ```
 sudo apt update
-sudo apt install Maven
+sudo apt install maven
 ```
 
 1. Exact the .tar.gz file to the place you want to run the project
