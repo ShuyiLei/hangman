@@ -1,7 +1,11 @@
 $( document ).ready(function() {
-	$.get("WordServlet", {requestType:"gamestart"}, function(responseText) {   // Execute Ajax GET request on URL of WordServlet
+	$.get("WordServlet", {requestType:"gamestart"}, function(res) {   // Execute Ajax GET request on URL of WordServlet
 	  // Initialize game, get the length of the string.
-	  var lenth = parseInt(responseText);
+	  var lenth = res.len;
+	  $("#gw").text(res.gw);
+	  $("#gl").text(res.gl);
+	  $("#lw").text(res.lw);
+	  $("#ll").text(res.ll);
 	  // Network has its delay. Don't want to accept key input all the time
 	  // When ready to accept input, busy is false
 	  var busy = false;
@@ -60,6 +64,10 @@ $( document ).ready(function() {
 						  $("#info2").text("Good luck next time!");
 						  // Change the image to the final one
 						  $("#mainimg").attr("src","resources/10.png");
+						  // Update statistic locally to reduse server pressure
+						  // Server side stat should have been updated so people can't cheat
+						  $("#gl").text(res.gl + 1);
+						  $("#ll").text(res.ll + 1);
 						  busy = true;
 					  } else if (responseJson.res == "ok" || responseJson.res == "pass"){
 						  $("#info2").text("Bingo!");
@@ -71,6 +79,10 @@ $( document ).ready(function() {
 						  }
 						  if(responseJson.res == "pass"){
 							  $("#info2").text("You win!");
+							  // Update statistic locally to reduse server pressure
+							  // Server side stat should have been updated so people can't cheat
+							  $("#gw").text(res.gw + 1);
+							  $("#lw").text(res.lw + 1);
 							  busy = true;
 						  }
 					  } else if (responseJson.res == "guessed"){

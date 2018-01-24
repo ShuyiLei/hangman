@@ -9,6 +9,7 @@ public class WordParser {
 	private boolean failed = false; // Anti-cheat
 	private String word;
 	private boolean[] guessed = new boolean[26];
+	private int status = 0; // 0:pending 1:lost 2:win
 	public WordParser(String w, WordServlet wordServlet) {
 		// This is to call statistic methods
 		this.wordServlet = wordServlet;
@@ -28,6 +29,10 @@ public class WordParser {
 		for(Letter letter:letterList.values()) {
 			letter.finishInit();
 		}
+	}
+
+	public int getStatus(){
+		return status;
 	}
 
 
@@ -54,7 +59,7 @@ public class WordParser {
 				//stringBuffer.append("\"res\":\"failed\",\"ans\"=\"");
 				//stringBuffer.append(word + "\"");
 				stringBuffer.append("\"res\":\"failed\",\"ans\":\"" + word + "\"");
-				wordServlet.add_lost();
+				status = 1; // Lost
 				failed = true;
 			}
 			else {
@@ -73,7 +78,7 @@ public class WordParser {
 			if(letter_num == 0) {
 				// No remaining covered letter, game won!
 				stringBuffer.append("\"res\":\"pass\"");
-				wordServlet.add_win();
+				status = 2; // win
 			}
 			else {
 				stringBuffer.append("\"res\":\"ok\"");

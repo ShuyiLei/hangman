@@ -25,7 +25,8 @@ public class WordServlet extends HttpServlet {
     		,"awkward","pixel","jazz","funny","lucky","graduate","vivid"
     };
     private static final Random RANDOM = new Random();
-    private static final Map<String, WordParser> clients = new ConcurrentHashMap<>();
+	private static final Map<String, WordParser> clients = new ConcurrentHashMap<>();
+	private static final Map<String, SessionStat> session_stat = new ConcurrentHashMap<>();
     // Statistic numbers
     private static int total_games = 0;
     private static int won_games = 0;
@@ -52,6 +53,8 @@ public class WordServlet extends HttpServlet {
 		// write to out to response to the client
 		PrintWriter out = response.getWriter();
 		if(type == null) {
+			// Send a 405 error to front-end
+			// So front-end will reset the game.
 			response.sendError(405);
 			return;
 		}
@@ -68,18 +71,37 @@ public class WordServlet extends HttpServlet {
 		}
 		else if(type.equals("gamestart")) {
 			// Random get an answer from word pool
-			String anwser = wordpool[RANDOM.nextInt(wordpool.length)];
-			// Log to Tomcat for debugging
-			System.out.println("answer: " + anwser);
+			String answer = wordpool[RANDOM.nextInt(wordpool.length)];
+			// Tomcat log the word
+			System.out.println("answer: " + answer);
 			// Plain text response type
-			response.setContentType("text/plain");
+			response.setContentType("application/json");
 			// UTF-8 character set
-		    response.setCharacterEncoding("UTF-8");
-		    // This is to help making the answer
-		    WordParser wordParser = new WordParser(anwser, this);
+			response.setCharacterEncoding("UTF-8");
+			// Statistic for this session
+			SessionStat stat = null;			
+			if(!session_stat.containsKey(session_id)){
+				stat = new SessionStat();
+				session_stat.put(session_id, stat);
+			} else {
+				stat = session_stat.get(session_id);
+			}
+			// This is to help making the answer
+			// If it is not null, a previous game exists. If it is still pending,
+			// treat as lost
+			//if(clients.containsKey(session_id) && clients.get(session_id).getStatus() == 0){
+			if(clients.containsKey(session_id)){
+				add_lost();
+				stat.lost ++;
+			}
+		    WordParser wordParser = new WordParser(answer, this);
 		    clients.put(session_id, wordParser);
-		    // Write length
-			out.append(anwser.length()+"");
+		    // Write json of len and win/lost stat
+			String res = "{\"len\":" + answer.length() + ",\"lw\":"
+				+ stat.win + ",\"ll\":" + stat.lost + ",\"gw\":" 
+				+ won_games + ",\"gl\":" + lost_games + "}";
+			System.out.println(res);
+			out.append(res);
 			synchronized (this) {
 				total_games ++;
 			}
@@ -102,6 +124,19 @@ public class WordServlet extends HttpServlet {
 				response.setContentType("application/json");
 			    response.setCharacterEncoding("UTF-8");
 				response.getWriter().append(res);
+
+				int status = wordParser.getStatus();
+				if(status == 1){
+					// Game lost
+					add_lost();
+					session_stat.get(session_id).lost ++;
+					clients.remove(session_id);
+				} else if (status == 2){
+					// Game win
+					add_win();
+					session_stat.get(session_id).win ++;
+					clients.remove(session_id);
+				}
 
 			}
 			else {
@@ -128,6 +163,11 @@ public class WordServlet extends HttpServlet {
 
 	public synchronized void add_lost() {
 		lost_games ++;
+	}
+
+	private class SessionStat {
+		int win;
+		int lost;
 	}
 
 }
