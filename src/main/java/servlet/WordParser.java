@@ -8,6 +8,7 @@ public class WordParser {
 	private WordServlet wordServlet;
 	private boolean failed = false; // Anti-cheat
 	private String word;
+	private boolean[] guessed = new boolean[26];
 	public WordParser(String w, WordServlet wordServlet) {
 		// This is to call statistic methods
 		this.wordServlet = wordServlet;
@@ -33,13 +34,18 @@ public class WordParser {
 	public String guess(String l) {
 		// Guess return a JSON string that will be parsed in front-end
 		// To avoid more libraries involved, construct JSON string manually
-		// Since the structure is simple
+		// since the structure is simple
 		if(failed) {
 			// Anti-cheat
 			return "{\"res\":\"failed\"}";
 		}
 		StringBuffer stringBuffer = new StringBuffer("{");
-		if(!letterList.containsKey(l)) {
+		int idx = l.charAt(0) - 'A'; // index in the "guessed" array
+		if(guessed[idx]){
+			stringBuffer.append("\"res\":\"guessed\"");
+		}
+		else if(!letterList.containsKey(l)) {
+			guessed[idx] = true;
 			// Not in our correct letter list, guessed a wrong one
 			// state is the wrong times a user guessed
 			state ++;
@@ -61,27 +67,19 @@ public class WordParser {
 		else {
 			// Guess in our guess list
 			Letter letter = letterList.get(l);
-			if(letter.getGuessed()) {
-				// Has already guessed, tell front-end
-				// Note it is only for correct guess, since it is already displayed
-				// in front-end. Won't do so for wrong guesses to make the game more fun
-				stringBuffer.append("\"res\":\"guessed\"");
+			// Never guessed letter, one less remaining letter
+			letter_num--;
+			if(letter_num == 0) {
+				// No remaining covered letter, game won!
+				stringBuffer.append("\"res\":\"pass\"");
+				wordServlet.add_win();
 			}
 			else {
-				// Never guessed letter, one less remaining letter
-				letter_num--;
-				if(letter_num == 0) {
-					// No remaining covered letter, game won!
-					stringBuffer.append("\"res\":\"pass\"");
-					wordServlet.add_win();
-				}
-				else {
-					stringBuffer.append("\"res\":\"ok\"");
-				}
-				stringBuffer.append(",\"detail\":");
-				// Tell front-end the indexes of the letter guessed
-				stringBuffer.append(letter.guess());
+				stringBuffer.append("\"res\":\"ok\"");
 			}
+			stringBuffer.append(",\"detail\":");
+			// Tell front-end the indexes of the letter guessed
+			stringBuffer.append(letter.guess());
 		}
 
 		stringBuffer.append("}");
@@ -89,7 +87,7 @@ public class WordParser {
 	}
 
 	private static class Letter{
-		private boolean guessed = false;
+		//rivate boolean guessed = false;
 		private String jsonList;
 
 		// jsonList is manually constructed
@@ -106,12 +104,12 @@ public class WordParser {
 			jsonList = "[" + jsonList + "]";
 		}
 
-		protected boolean getGuessed() {
-			return guessed;
-		}
+		// protected boolean getGuessed() {
+		// 	return guessed;
+		// }
 
 		protected String guess() {
-			guessed = true;
+			//guessed = true;
 			return jsonList;
 		}
 	}

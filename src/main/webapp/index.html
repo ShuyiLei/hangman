@@ -14,14 +14,57 @@
 <div id="main">
 	<div>
 		<h1>The hang-man!</h1>
-		<h2>Press space to start a new game</h2>
+		<h3>Press space to start a new game</h2>
 		
 	</div>
-	<div class="imagediv">
+	<div id="imagediv">
+		<div id="leftpane">
+			<p class="tabletitle">This session</p>
+			<table>
+				<tr>
+					<th>Wins</th>
+					<td>0</td>
+				</tr>
+				<tr>
+					<th>Losts</th>
+					<td>0</td>
+				</tr>
+			</table>
+			<p class="tabletitle">Global</p>
+			<table>
+				<tr>
+					<th>Wins</th>
+					<td>0</td>
+				</tr>
+				<tr>
+					<th>Losts</th>
+					<td>0</td>
+				</tr>
+			</table>
+		</div>
 		<img src="resources/0.png" id="mainimg" />
+		<div id="rightpane">
+			<p class="tabletitle">Guess History</p>
+			<div class="historypane">
+				<table>
+					<tr>
+						<th>#</th>
+						<th>Guess</th>
+					</tr>
+				</table>
+			</div>
+			<div class="historypane">
+				<table>
+					<tr>
+						<th>#</th>
+						<th>Guess</th>
+					</tr>
+				</table>
+			</div>
+		</div>
 	</div>
 	<div>
-	<h2 id="info"><span id="info1">info</span><span id="info2">info</span></h2>
+		<h3 id="info"><span id="info1">info</span><span id="info2">info</span></h2>
 	</div>
     <div id="word">
     </div>

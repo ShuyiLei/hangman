@@ -93,7 +93,8 @@ public class WordServlet extends HttpServlet {
 			// Get corresponding WordParser from map
 			WordParser wordParser = clients.get(session_id);
 			if(type.equals("guess")) {
-				String letter = request.getParameter("letter");
+				String letter = request.getParameter("letter")
+									   .substring(0,1).toUpperCase();
 				String res = wordParser.guess(letter);
 				// Log response for debugging
 				System.out.println(res);

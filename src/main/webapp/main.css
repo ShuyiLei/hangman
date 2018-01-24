@@ -1,24 +1,21 @@
 h1{
 	text-align: center;
 }
-h2{
+h3{
+	text-align: center;
+}
+.tabletitle{
 	text-align: center;
 }
 #info {
 	visibility:hidden;
 }
 
-#mainimg {
-    display: block;
-    height: 60%;
-    width:60%;
-    margin-left: auto;
-    margin-right: auto;
-}
+
 #word{
 	display:block;
-	    margin: auto;
-    width: 50%;
+	margin: auto;
+    width: 40%;
     border: 2px solid green;
 }
 #word div{
@@ -34,4 +31,47 @@ h2{
 
 #somediv{
 	visibility:hidden;
+}
+
+#leftpane {
+	width: 25%;
+	float: left;
+}
+
+#rightpane {
+	width: 25%;
+	float: left;
+}
+
+#mainimg {
+    display: block;
+    width:48%;
+    margin-left: auto;
+	margin-right: auto;
+	float: left;
+}
+
+
+#imagediv:after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 8px;
+}
+
+table {
+    border-spacing: 2px;
+}
+
+.historypane {
+	float: left;
+	width: 50%;
 }
