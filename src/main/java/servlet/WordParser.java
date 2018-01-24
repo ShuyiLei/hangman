@@ -65,6 +65,7 @@ public class WordParser {
 
 		}
 		else {
+			guessed[idx] = true;
 			// Guess in our guess list
 			Letter letter = letterList.get(l);
 			// Never guessed letter, one less remaining letter

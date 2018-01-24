@@ -9,6 +9,8 @@ h3{
 }
 #info {
 	visibility:hidden;
+	margin-top: 2px;
+	margin-bottom: 2px;
 }
 
 
@@ -63,8 +65,13 @@ table, th, td {
     border-collapse: collapse;
 }
 
+table {
+	margin: auto;
+}
+
 th, td {
-    padding: 8px;
+	padding: 5px;
+	text-align: center;
 }
 
 table {

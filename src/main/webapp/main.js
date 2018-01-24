@@ -9,7 +9,8 @@ $( document ).ready(function() {
 	  for(i = 0; i < lenth; i ++) {
 		  $("#word").append("<div class=\"letter\">_</div>");
 	  }
-	  
+	  // history_index is the index of the guess history
+	  var history_index = 0;
 	  $( document ).keydown(function(event){
 		  if(event.which == 32){
 			  // Space pressed. Reload
@@ -37,11 +38,23 @@ $( document ).ready(function() {
 				  // Block following key presses
 				  busy = true;
 				  $.get("WordServlet", {requestType:"guess",letter:guess}, function(responseJson) {
+					  if(responseJson.res == "wrong" || responseJson.res == "failed"){
+						// Record wrong guess histories
+						var tab;
+						if(history_index < 5){
+							tab = $("#his_tab1");
+						} else {
+							tab = $("#his_tab2");
+						}
+						history_index++;
+						tab.append("<tr><td>"+ history_index.toString() +"</td><td>" + guess + "</td></tr>");
+					  }
 					  busy = false;
 					  if(responseJson.res == "wrong"){
 						  $("#info2").text("Oops! Please try again:)");
 						  // Change the image to corresponding one
 						  $("#mainimg").attr("src","resources/"+ responseJson.state +".png");
+						  
 					  } else if (responseJson.res == "failed"){
 						  $("#info1").text("The answer is " + responseJson.ans+". ");
 						  $("#info2").text("Good luck next time!");
