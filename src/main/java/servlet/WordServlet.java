@@ -2,10 +2,13 @@ package servlet;
 
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Map;
 
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.List;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,23 +24,32 @@ import javax.servlet.http.HttpSession;
 @WebServlet("/WordServlet")
 public class WordServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-    private static final String[] wordpool = new String[] {"goose","cheese","daydream","pizza","strategy","confirm"
-    		,"awkward","pixel","jazz","funny","lucky","graduate","vivid"
-    };
+    // private static final String[] wordpool = new String[] {"goose","cheese","daydream","pizza","strategy","confirm"
+    // 		,"awkward","pixel","jazz","funny","lucky","graduate","vivid"
+    // };
     private static final Random RANDOM = new Random();
 	private static final Map<String, WordParser> clients = new ConcurrentHashMap<>();
 	private static final Map<String, SessionStat> session_stat = new ConcurrentHashMap<>();
     // Statistic numbers
     private static int total_games = 0;
     private static int won_games = 0;
-    private static int lost_games = 0;
+	private static int lost_games = 0;
+	
+	private static List<String> wordpool;
 
     /**
      * @see HttpServlet#HttpServlet()
      */
     public WordServlet() {
-        super();
-        // TODO Auto-generated constructor stub
+		super();
+		System.out.println("Working Directory = " +
+		System.getProperty("user.dir"));
+		try{
+			wordpool = Files.readAllLines( Paths.get("words.txt") );
+		} 
+		catch(IOException e){
+			System.out.println("File words.txt not found");
+		}
     }
 
 	/**
@@ -71,7 +83,7 @@ public class WordServlet extends HttpServlet {
 		}
 		else if(type.equals("gamestart")) {
 			// Random get an answer from word pool
-			String answer = wordpool[RANDOM.nextInt(wordpool.length)];
+			String answer = wordpool.get(RANDOM.nextInt(wordpool.size()));
 			// Tomcat log the word
 			System.out.println("answer: " + answer);
 			// Plain text response type
