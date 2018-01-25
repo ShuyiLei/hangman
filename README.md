@@ -17,7 +17,7 @@ tar xzvf hangman-<version number>.tar.gz -C <destination>
 
 2. Change current directory to the destination
 ```
-cd <destination>/hangman
+cd <destination>/hangman-<version number>
 ```
 
 3. Use Maven to compile the project
