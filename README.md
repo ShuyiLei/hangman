@@ -12,7 +12,7 @@ sudo apt install maven
 
 1. Exact the .tar.gz file to the place you want to run the project
 ```
-tar xzvf hangman.tar.gz <destination>
+tar xzvf hangman-<version number>.tar.gz -C <destination>
 ```
 
 2. Change current directory to the destination
