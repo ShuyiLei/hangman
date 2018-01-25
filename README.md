@@ -10,6 +10,8 @@ sudo apt update
 sudo apt install maven
 ```
 
+## Run the project
+
 1. Exact the .tar.gz file to the place you want to run the project
 ```
 tar xzvf hangman-<version number>.tar.gz -C <destination>
@@ -28,4 +30,13 @@ mvn package
 4. Run the script
 ```
 sh target/bin/webapp
+```
+
+## Test the project
+
+1. Follow the step 1 to 3 of the **Run the project** part.
+
+2. Run the script
+```
+sh target/bin/tests
 ```
