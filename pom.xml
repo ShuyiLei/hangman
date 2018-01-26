@@ -34,13 +34,14 @@
         <version>${tomcat.version}</version>
     </dependency>
     <dependency>
-        <groupId>org.apache.tomcat</groupId>
-        <artifactId>tomcat-jsp-api</artifactId>
-        <version>${tomcat.version}</version>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.11</version>
     </dependency>
+
   </dependencies>
   <build>
-    <finalName>embeddedTomcatSample</finalName>
+    <finalName>embeddedTomcatHangman</finalName>
     <plugins>
         <plugin>
             <groupId>org.codehaus.mojo</groupId>
@@ -52,6 +53,10 @@
                     <program>
                         <mainClass>launch.Main</mainClass>
                         <name>webapp</name>
+                    </program>
+                    <program>
+                        <mainClass>launch.Tests</mainClass>
+                        <name>tests</name>
                     </program>
                 </programs>
             </configuration>

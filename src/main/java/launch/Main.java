@@ -3,15 +3,21 @@ package launch;
 import java.io.File;
 
 import org.apache.catalina.WebResourceRoot;
+import org.apache.catalina.Wrapper;
 import org.apache.catalina.core.StandardContext;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.catalina.webresources.DirResourceSet;
 import org.apache.catalina.webresources.StandardRoot;
 
+import servlet.WordServlet;
+
 public class Main {
 
     public static void main(String[] args) throws Exception {
+        startServer().getServer().await();
+    }
 
+    public static Tomcat startServer() throws Exception{
         String webappDirLocation = "src/main/webapp/";
         Tomcat tomcat = new Tomcat();
 
@@ -36,6 +42,6 @@ public class Main {
         ctx.setResources(resources);
 
         tomcat.start();
-        tomcat.getServer().await();
+        return tomcat;
     }
 }

@@ -5,9 +5,11 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
+import java.io.File;
 
 import java.util.Random;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -44,12 +46,19 @@ public class WordServlet extends HttpServlet {
 		super();
 		System.out.println("Working Directory = " +
 		System.getProperty("user.dir"));
-		try{
-			wordpool = Files.readAllLines( Paths.get("words.txt") );
-		} 
-		catch(IOException e){
-			System.out.println("File words.txt not found");
-		}
+		// For test, I put a file in current directory named test to indicate it is in test mode
+		// The word will be fixed in test mode
+		File testfile = new File( "test" );
+		if(testfile.exists()){
+			wordpool = Arrays.asList("testooo");
+		} else {
+			try{
+				wordpool = Files.readAllLines( Paths.get("words.txt") );
+			} 
+			catch(IOException e){
+				System.out.println("File words.txt not found");
+			}
+		}	
     }
 
 	/**
